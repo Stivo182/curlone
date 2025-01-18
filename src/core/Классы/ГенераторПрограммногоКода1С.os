@@ -102,6 +102,65 @@
 
 КонецФункции
 
+#КонецОбласти
+
+#Область СлужебныйПрограммныйИнтерфейс
+
+Функция ПоддерживаемыеОпции() Экспорт
+
+	ПоддерживаемыеОпции = "url
+	|H
+	|header
+	|X
+	|request
+	|u
+	|user
+	|d
+	|data
+	|data-ascii
+	|data-raw
+	|data-binary
+	|data-urlencode
+	|T
+	|upload-file
+	|G
+	|get
+	|I
+	|head
+	|E
+	|cert
+	|ca-native
+	|cacert
+	|url-query
+	|o
+	|output
+	|output-dir
+	|O
+	|remote-name
+	|remote-name-all
+	|x
+	|proxy
+	|U
+	|proxy-user
+	|proxy-basic
+	|proxy-ntlm
+	|m
+	|max-time
+	|connect-timeout
+	|json
+	|A
+	|user-agent
+	|oauth2-bearer
+	|ftp-pasv
+	|P
+	|ftp-port
+	|l
+	|list-only";
+
+	Возврат СтрРазделить(ПоддерживаемыеОпции, Символы.ПС, Ложь);
+
+КонецФункции
+
 Функция ПоддерживаемыеПротоколы() Экспорт
 	Протоколы = Новый Массив();
 	Протоколы.Добавить(ПротоколыURL.HTTP);
