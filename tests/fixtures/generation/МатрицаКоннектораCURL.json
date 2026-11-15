@@ -1544,5 +1544,53 @@
       "ОжидаемыйКод": "Данные = Новый Соответствие();\nДанные.Вставить(\"name\", \"alice\");\n\nЗаголовки = Новый Соответствие();\nЗаголовки.Вставить(\"Content-Type\", \"application/json\");\n\nДополнительныеПараметры = Новый Структура();\nДополнительныеПараметры.Вставить(\"Заголовки\", Заголовки);\nДополнительныеПараметры.Вставить(\"Json\", Данные);\n\nРезультат = КоннекторHTTP.Post(\"http://example.com\", , ДополнительныеПараметры);\n\nРезультат = КоннекторHTTP.КакJson(Результат);",
       "ОжидаемыйКодАнглийский": "Data = New Map();\nData.Insert(\"name\", \"alice\");\n\nHeaders = New Map();\nHeaders.Insert(\"Content-Type\", \"application/json\");\n\nAdditionalParameters = New Structure();\nAdditionalParameters.Insert(\"Headers\", Headers);\nAdditionalParameters.Insert(\"Json\", Data);\n\nResult = HTTPConnector.Post(\"http://example.com\", , AdditionalParameters);\n\nResult = HTTPConnector.AsJson(Result);"
     }
+  },
+  {
+    "Сценарий": {
+      "Команда": "curl 'http://example.com?existing=1' -G -d 'added=2'",
+      "РазбиратьJSON": false,
+      "ОжидаемыйКод": "URL = \"http://example.com?existing=1&added=2\";\n\nРезультат = КоннекторHTTP.Get(URL);",
+      "ОжидаемыйКодАнглийский": "URL = \"http://example.com?existing=1&added=2\";\n\nResult = HTTPConnector.Get(URL);"
+    }
+  },
+  {
+    "Сценарий": {
+      "Команда": "curl 'http://example.com?key=first&key=second' -G -d 'key=third'",
+      "РазбиратьJSON": false,
+      "ОжидаемыйКод": "URL = \"http://example.com?key=first&key=second&key=third\";\n\nРезультат = КоннекторHTTP.Get(URL);",
+      "ОжидаемыйКодАнглийский": "URL = \"http://example.com?key=first&key=second&key=third\";\n\nResult = HTTPConnector.Get(URL);"
+    }
+  },
+  {
+    "Сценарий": {
+      "Команда": "curl 'http://example.com?path=%2F&flag&empty=&plus=a+b#section' -G --data-urlencode 'q=a b'",
+      "РазбиратьJSON": false,
+      "ОжидаемыйКод": "URL = \"http://example.com?path=%2F&flag&empty=&plus=a+b&q=a%20b\";\n\nРезультат = КоннекторHTTP.Get(URL);",
+      "ОжидаемыйКодАнглийский": "URL = \"http://example.com?path=%2F&flag&empty=&plus=a+b&q=a%20b\";\n\nResult = HTTPConnector.Get(URL);"
+    }
+  },
+  {
+    "Сценарий": {
+      "Команда": "curl \"http://example.com?existing=$VALUE\" -G -d \"added=2\"",
+      "РазбиратьJSON": false,
+      "ОжидаемыйКод": "VALUE = \"\";\n\nURL = \"http://example.com?existing=\" + VALUE + \"&added=2\";\n\nРезультат = КоннекторHTTP.Get(URL);",
+      "ОжидаемыйКодАнглийский": "VALUE = \"\";\n\nURL = \"http://example.com?existing=\" + VALUE + \"&added=2\";\n\nResult = HTTPConnector.Get(URL);"
+    }
+  },
+  {
+    "Сценарий": {
+      "Команда": "curl \"http://example.com?existing=$VALUE\" -G --data-binary @query.txt",
+      "РазбиратьJSON": false,
+      "ОжидаемыйКод": "VALUE = \"\";\n\nЧтениеТекста = Новый ЧтениеТекста(\"query.txt\");\nТекстовыеДанныеФайла_1 = ЧтениеТекста.Прочитать();\nЧтениеТекста.Закрыть();\n\nРезультат = КоннекторHTTP.Get(\"http://example.com?existing=\" + VALUE + \"&\" + ТекстовыеДанныеФайла_1);",
+      "ОжидаемыйКодАнглийский": "VALUE = \"\";\n\nTextReader = New TextReader(\"query.txt\");\nFileText_1 = TextReader.Read();\nTextReader.Close();\n\nResult = HTTPConnector.Get(\"http://example.com?existing=\" + VALUE + \"&\" + FileText_1);"
+    }
+  },
+  {
+    "Сценарий": {
+      "Команда": "curl \"http://example.com?existing=$VALUE\" -G --data-binary @query.txt -d added=2",
+      "РазбиратьJSON": false,
+      "ОжидаемыйКод": "VALUE = \"\";\n\nЧтениеТекста = Новый ЧтениеТекста(\"query.txt\");\nТекстовыеДанныеФайла_1 = ЧтениеТекста.Прочитать();\nЧтениеТекста.Закрыть();\n\nURL = \"http://example.com?existing=\" + VALUE;\nURL = URL + \"&\" + ТекстовыеДанныеФайла_1;\nURL = URL + \"&added=2\";\n\nРезультат = КоннекторHTTP.Get(URL);",
+      "ОжидаемыйКодАнглийский": "VALUE = \"\";\n\nTextReader = New TextReader(\"query.txt\");\nFileText_1 = TextReader.Read();\nTextReader.Close();\n\nURL = \"http://example.com?existing=\" + VALUE;\nURL = URL + \"&\" + FileText_1;\nURL = URL + \"&added=2\";\n\nResult = HTTPConnector.Get(URL);"
+    }
   }
 ]
