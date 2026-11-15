@@ -115,32 +115,32 @@
     "Сценарий": {
       "Команда": "curl 'http://example.com?param=value&param=value2'",
       "РазбиратьJSON": false,
-      "ОжидаемыйКод": "ПараметрыЗапроса = Новый Соответствие();\nПараметрыЗапроса.Вставить(\"param\", Новый Массив());\nПараметрыЗапроса[\"param\"].Добавить(\"value\");\nПараметрыЗапроса[\"param\"].Добавить(\"value2\");\n\nРезультат = КоннекторHTTP.Get(\"http://example.com\", ПараметрыЗапроса);",
-      "ОжидаемыйКодАнглийский": "QueryString = New Map();\nQueryString.Insert(\"param\", New Array());\nQueryString[\"param\"].Add(\"value\");\nQueryString[\"param\"].Add(\"value2\");\n\nResult = HTTPConnector.Get(\"http://example.com\", QueryString);"
+      "ОжидаемыйКод": "Результат = КоннекторHTTP.Get(\"http://example.com?param=value&param=value2\");",
+      "ОжидаемыйКодАнглийский": "Result = HTTPConnector.Get(\"http://example.com?param=value&param=value2\");"
     }
   },
   {
     "Сценарий": {
       "Команда": "curl 'http://example.com?foo=1&foo'",
       "РазбиратьJSON": false,
-      "ОжидаемыйКод": "ПараметрыЗапроса = Новый Соответствие();\nПараметрыЗапроса.Вставить(\"foo\", Новый Массив());\nПараметрыЗапроса[\"foo\"].Добавить(\"1\");\nПараметрыЗапроса[\"foo\"].Добавить(Неопределено);\n\nРезультат = КоннекторHTTP.Get(\"http://example.com\", ПараметрыЗапроса);",
-      "ОжидаемыйКодАнглийский": "QueryString = New Map();\nQueryString.Insert(\"foo\", New Array());\nQueryString[\"foo\"].Add(\"1\");\nQueryString[\"foo\"].Add(Undefined);\n\nResult = HTTPConnector.Get(\"http://example.com\", QueryString);"
+      "ОжидаемыйКод": "Результат = КоннекторHTTP.Get(\"http://example.com?foo=1&foo\");",
+      "ОжидаемыйКодАнглийский": "Result = HTTPConnector.Get(\"http://example.com?foo=1&foo\");"
     }
   },
   {
     "Сценарий": {
       "Команда": "curl 'http://example.com?foo&foo=1'",
       "РазбиратьJSON": false,
-      "ОжидаемыйКод": "ПараметрыЗапроса = Новый Соответствие();\nПараметрыЗапроса.Вставить(\"foo\", Новый Массив());\nПараметрыЗапроса[\"foo\"].Добавить(Неопределено);\nПараметрыЗапроса[\"foo\"].Добавить(\"1\");\n\nРезультат = КоннекторHTTP.Get(\"http://example.com\", ПараметрыЗапроса);",
-      "ОжидаемыйКодАнглийский": "QueryString = New Map();\nQueryString.Insert(\"foo\", New Array());\nQueryString[\"foo\"].Add(Undefined);\nQueryString[\"foo\"].Add(\"1\");\n\nResult = HTTPConnector.Get(\"http://example.com\", QueryString);"
+      "ОжидаемыйКод": "Результат = КоннекторHTTP.Get(\"http://example.com?foo&foo=1\");",
+      "ОжидаемыйКодАнглийский": "Result = HTTPConnector.Get(\"http://example.com?foo&foo=1\");"
     }
   },
   {
     "Сценарий": {
       "Команда": "curl 'http://example.com?foo=a%20b&foo&foo=%3D'",
       "РазбиратьJSON": false,
-      "ОжидаемыйКод": "ПараметрыЗапроса = Новый Соответствие();\nПараметрыЗапроса.Вставить(\"foo\", Новый Массив());\nПараметрыЗапроса[\"foo\"].Добавить(\"a b\");\nПараметрыЗапроса[\"foo\"].Добавить(Неопределено);\nПараметрыЗапроса[\"foo\"].Добавить(\"=\");\n\nРезультат = КоннекторHTTP.Get(\"http://example.com\", ПараметрыЗапроса);",
-      "ОжидаемыйКодАнглийский": "QueryString = New Map();\nQueryString.Insert(\"foo\", New Array());\nQueryString[\"foo\"].Add(\"a b\");\nQueryString[\"foo\"].Add(Undefined);\nQueryString[\"foo\"].Add(\"=\");\n\nResult = HTTPConnector.Get(\"http://example.com\", QueryString);"
+      "ОжидаемыйКод": "Результат = КоннекторHTTP.Get(\"http://example.com?foo=a%20b&foo&foo=%3D\");",
+      "ОжидаемыйКодАнглийский": "Result = HTTPConnector.Get(\"http://example.com?foo=a%20b&foo&foo=%3D\");"
     }
   },
   {
@@ -1591,6 +1591,102 @@
       "РазбиратьJSON": false,
       "ОжидаемыйКод": "VALUE = \"\";\n\nЧтениеТекста = Новый ЧтениеТекста(\"query.txt\");\nТекстовыеДанныеФайла_1 = ЧтениеТекста.Прочитать();\nЧтениеТекста.Закрыть();\n\nURL = \"http://example.com?existing=\" + VALUE;\nURL = URL + \"&\" + ТекстовыеДанныеФайла_1;\nURL = URL + \"&added=2\";\n\nРезультат = КоннекторHTTP.Get(URL);",
       "ОжидаемыйКодАнглийский": "VALUE = \"\";\n\nTextReader = New TextReader(\"query.txt\");\nFileText_1 = TextReader.Read();\nTextReader.Close();\n\nURL = \"http://example.com?existing=\" + VALUE;\nURL = URL + \"&\" + FileText_1;\nURL = URL + \"&added=2\";\n\nResult = HTTPConnector.Get(URL);"
+    }
+  },
+  {
+    "Сценарий": {
+      "Команда": "curl http://example.com -d 'a=1' -d 'A=2' -d 'a=3'",
+      "РазбиратьJSON": false,
+      "ОжидаемыйКод": "Данные = \"a=1\"\n\t+ \"&\" + \"A=2\"\n\t+ \"&\" + \"a=3\";\n\nРезультат = КоннекторHTTP.Post(\"http://example.com\", Данные);",
+      "ОжидаемыйКодАнглийский": "Data = \"a=1\"\n\t+ \"&\" + \"A=2\"\n\t+ \"&\" + \"a=3\";\n\nResult = HTTPConnector.Post(\"http://example.com\", Data);"
+    }
+  },
+  {
+    "Сценарий": {
+      "Команда": "curl http://example.com -d 'a=first&A=middle&a=last%2Bvalue'",
+      "РазбиратьJSON": false,
+      "ОжидаемыйКод": "Данные = \"a=first&A=middle&a=last%2Bvalue\";\n\nРезультат = КоннекторHTTP.Post(\"http://example.com\", Данные);",
+      "ОжидаемыйКодАнглийский": "Data = \"a=first&A=middle&a=last%2Bvalue\";\n\nResult = HTTPConnector.Post(\"http://example.com\", Data);"
+    }
+  },
+  {
+    "Сценарий": {
+      "Команда": "curl http://example.com -d \"a=$ONE\" -d \"A=2\" -d \"a=$TWO\"",
+      "РазбиратьJSON": false,
+      "ОжидаемыйКод": "ONE = \"\";\nTWO = \"\";\n\nДанные = \"a=\" + ONE\n\t+ \"&\" + \"A=2\"\n\t+ \"&\" + \"a=\" + TWO;\n\nРезультат = КоннекторHTTP.Post(\"http://example.com\", Данные);",
+      "ОжидаемыйКодАнглийский": "ONE = \"\";\nTWO = \"\";\n\nData = \"a=\" + ONE\n\t+ \"&\" + \"A=2\"\n\t+ \"&\" + \"a=\" + TWO;\n\nResult = HTTPConnector.Post(\"http://example.com\", Data);"
+    }
+  },
+  {
+    "Сценарий": {
+      "Команда": "curl http://example.com --data-urlencode 'a=one two' --data-urlencode 'a=&'",
+      "РазбиратьJSON": false,
+      "ОжидаемыйКод": "Данные = \"a=\" + КодироватьСтроку(\"one two\", СпособКодированияСтроки.КодировкаURL)\n\t+ \"&\" + \"a=\" + КодироватьСтроку(\"&\", СпособКодированияСтроки.КодировкаURL);\n\nРезультат = КоннекторHTTP.Post(\"http://example.com\", Данные);",
+      "ОжидаемыйКодАнглийский": "Data = \"a=\" + EncodeString(\"one two\", StringEncodingMethod.URLEncoding)\n\t+ \"&\" + \"a=\" + EncodeString(\"&\", StringEncodingMethod.URLEncoding);\n\nResult = HTTPConnector.Post(\"http://example.com\", Data);"
+    }
+  },
+  {
+    "Сценарий": {
+      "Команда": "curl http://example.com -G -d 'a=1' -d 'A=2' -d 'a=3'",
+      "РазбиратьJSON": false,
+      "ОжидаемыйКод": "URL = \"http://example.com?a=1&A=2&a=3\";\n\nРезультат = КоннекторHTTP.Get(URL);",
+      "ОжидаемыйКодАнглийский": "URL = \"http://example.com?a=1&A=2&a=3\";\n\nResult = HTTPConnector.Get(URL);"
+    }
+  },
+  {
+    "Сценарий": {
+      "Команда": "curl http://example.com -G -d 'a=1&A=2&a=3'",
+      "РазбиратьJSON": false,
+      "ОжидаемыйКод": "URL = \"http://example.com?a=1&A=2&a=3\";\n\nРезультат = КоннекторHTTP.Get(URL);",
+      "ОжидаемыйКодАнглийский": "URL = \"http://example.com?a=1&A=2&a=3\";\n\nResult = HTTPConnector.Get(URL);"
+    }
+  },
+  {
+    "Сценарий": {
+      "Команда": "curl 'http://example.com?a=1&A=2&a=3#fragment'",
+      "РазбиратьJSON": false,
+      "ОжидаемыйКод": "Результат = КоннекторHTTP.Get(\"http://example.com?a=1&A=2&a=3\");",
+      "ОжидаемыйКодАнглийский": "Result = HTTPConnector.Get(\"http://example.com?a=1&A=2&a=3\");"
+    }
+  },
+  {
+    "Сценарий": {
+      "Команда": "curl \"http://example.com?a=$ONE&A=2&a=$TWO#fragment\"",
+      "РазбиратьJSON": false,
+      "ОжидаемыйКод": "ONE = \"\";\nTWO = \"\";\n\nРезультат = КоннекторHTTP.Get(\"http://example.com?a=\" + ONE + \"&A=2&a=\" + TWO);",
+      "ОжидаемыйКодАнглийский": "ONE = \"\";\nTWO = \"\";\n\nResult = HTTPConnector.Get(\"http://example.com?a=\" + ONE + \"&A=2&a=\" + TWO);"
+    }
+  },
+  {
+    "Сценарий": {
+      "Команда": "curl http://example.com -d 'a=1' -d 'A=2'",
+      "РазбиратьJSON": false,
+      "ОжидаемыйКод": "Данные = Новый Соответствие();\nДанные.Вставить(\"a\", \"1\");\nДанные.Вставить(\"A\", \"2\");\n\nРезультат = КоннекторHTTP.Post(\"http://example.com\", Данные);",
+      "ОжидаемыйКодАнглийский": "Data = New Map();\nData.Insert(\"a\", \"1\");\nData.Insert(\"A\", \"2\");\n\nResult = HTTPConnector.Post(\"http://example.com\", Data);"
+    }
+  },
+  {
+    "Сценарий": {
+      "Команда": "curl 'http://example.com?a=1&A=2'",
+      "РазбиратьJSON": false,
+      "ОжидаемыйКод": "ПараметрыЗапроса = Новый Соответствие();\nПараметрыЗапроса.Вставить(\"a\", \"1\");\nПараметрыЗапроса.Вставить(\"A\", \"2\");\n\nРезультат = КоннекторHTTP.Get(\"http://example.com\", ПараметрыЗапроса);",
+      "ОжидаемыйКодАнглийский": "QueryString = New Map();\nQueryString.Insert(\"a\", \"1\");\nQueryString.Insert(\"A\", \"2\");\n\nResult = HTTPConnector.Get(\"http://example.com\", QueryString);"
+    }
+  },
+  {
+    "Сценарий": {
+      "Команда": "curl http://example.com -d \"$KEY=1\" -d \"$KEY=2\"",
+      "РазбиратьJSON": false,
+      "ОжидаемыйКод": "KEY = \"\";\n\nДанные = KEY + \"=1\"\n\t+ \"&\" + KEY + \"=2\";\n\nРезультат = КоннекторHTTP.Post(\"http://example.com\", Данные);",
+      "ОжидаемыйКодАнглийский": "KEY = \"\";\n\nData = KEY + \"=1\"\n\t+ \"&\" + KEY + \"=2\";\n\nResult = HTTPConnector.Post(\"http://example.com\", Data);"
+    }
+  },
+  {
+    "Сценарий": {
+      "Команда": "curl http://example.com -d \"$FIRST=1\" -d \"$SECOND=2\"",
+      "РазбиратьJSON": false,
+      "ОжидаемыйКод": "FIRST = \"\";\nSECOND = \"\";\n\nДанные = FIRST + \"=1\"\n\t+ \"&\" + SECOND + \"=2\";\n\nРезультат = КоннекторHTTP.Post(\"http://example.com\", Данные);",
+      "ОжидаемыйКодАнглийский": "FIRST = \"\";\nSECOND = \"\";\n\nData = FIRST + \"=1\"\n\t+ \"&\" + SECOND + \"=2\";\n\nResult = HTTPConnector.Post(\"http://example.com\", Data);"
     }
   }
 ]

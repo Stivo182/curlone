@@ -1704,5 +1704,101 @@
             "ОжидаемыйКод": "VALUE = \"\";\n\nЧтениеТекста = Новый ЧтениеТекста(\"query.txt\");\nТекстовыеДанныеФайла_1 = ЧтениеТекста.Прочитать();\nЧтениеТекста.Закрыть();\n\nСоединение = Новый HTTPСоединение(\"example.com\", 80);\n\nАдресРесурса = \"?existing=\" + VALUE;\nАдресРесурса = АдресРесурса + \"&\" + ТекстовыеДанныеФайла_1;\nАдресРесурса = АдресРесурса + \"&added=2\";\nHTTPЗапрос = Новый HTTPЗапрос(АдресРесурса);\n\nHTTPОтвет = Соединение.ВызватьHTTPМетод(\"GET\", HTTPЗапрос);",
             "ОжидаемыйКодАнглийский": "VALUE = \"\";\n\nTextReader = New TextReader(\"query.txt\");\nFileText_1 = TextReader.Read();\nTextReader.Close();\n\nConnection = New HTTPConnection(\"example.com\", 80);\n\nResourceAddress = \"?existing=\" + VALUE;\nResourceAddress = ResourceAddress + \"&\" + FileText_1;\nResourceAddress = ResourceAddress + \"&added=2\";\nHTTPRequest = New HTTPRequest(ResourceAddress);\n\nHTTPResponse = Connection.CallHTTPMethod(\"GET\", HTTPRequest);"
         }
+    },
+    {
+        "Сценарий": {
+            "Команда": "curl http://example.com -d 'a=1' -d 'A=2' -d 'a=3'",
+            "РазбиратьJSON": false,
+            "ОжидаемыйКод": "Заголовки = Новый Соответствие();\nЗаголовки.Вставить(\"Content-Type\", \"application/x-www-form-urlencoded\");\n\nСоединение = Новый HTTPСоединение(\"example.com\", 80);\nHTTPЗапрос = Новый HTTPЗапрос(\"/\", Заголовки);\nHTTPЗапрос.УстановитьТелоИзСтроки(\"a=1\" + \"&A=2\" + \"&a=3\");\n\nHTTPОтвет = Соединение.ВызватьHTTPМетод(\"POST\", HTTPЗапрос);",
+            "ОжидаемыйКодАнглийский": "Headers = New Map();\nHeaders.Insert(\"Content-Type\", \"application/x-www-form-urlencoded\");\n\nConnection = New HTTPConnection(\"example.com\", 80);\nHTTPRequest = New HTTPRequest(\"/\", Headers);\nHTTPRequest.SetBodyFromString(\"a=1\" + \"&A=2\" + \"&a=3\");\n\nHTTPResponse = Connection.CallHTTPMethod(\"POST\", HTTPRequest);"
+        }
+    },
+    {
+        "Сценарий": {
+            "Команда": "curl http://example.com -d 'a=first&A=middle&a=last%2Bvalue'",
+            "РазбиратьJSON": false,
+            "ОжидаемыйКод": "Заголовки = Новый Соответствие();\nЗаголовки.Вставить(\"Content-Type\", \"application/x-www-form-urlencoded\");\n\nСоединение = Новый HTTPСоединение(\"example.com\", 80);\nHTTPЗапрос = Новый HTTPЗапрос(\"/\", Заголовки);\nHTTPЗапрос.УстановитьТелоИзСтроки(\"a=first&A=middle&a=last%2Bvalue\");\n\nHTTPОтвет = Соединение.ВызватьHTTPМетод(\"POST\", HTTPЗапрос);",
+            "ОжидаемыйКодАнглийский": "Headers = New Map();\nHeaders.Insert(\"Content-Type\", \"application/x-www-form-urlencoded\");\n\nConnection = New HTTPConnection(\"example.com\", 80);\nHTTPRequest = New HTTPRequest(\"/\", Headers);\nHTTPRequest.SetBodyFromString(\"a=first&A=middle&a=last%2Bvalue\");\n\nHTTPResponse = Connection.CallHTTPMethod(\"POST\", HTTPRequest);"
+        }
+    },
+    {
+        "Сценарий": {
+            "Команда": "curl http://example.com -d \"a=$ONE\" -d \"A=2\" -d \"a=$TWO\"",
+            "РазбиратьJSON": false,
+            "ОжидаемыйКод": "ONE = \"\";\nTWO = \"\";\n\nЗаголовки = Новый Соответствие();\nЗаголовки.Вставить(\"Content-Type\", \"application/x-www-form-urlencoded\");\n\nСоединение = Новый HTTPСоединение(\"example.com\", 80);\nHTTPЗапрос = Новый HTTPЗапрос(\"/\", Заголовки);\nHTTPЗапрос.УстановитьТелоИзСтроки(\"a=\" + ONE + \"&A=2\" + \"&a=\" + TWO);\n\nHTTPОтвет = Соединение.ВызватьHTTPМетод(\"POST\", HTTPЗапрос);",
+            "ОжидаемыйКодАнглийский": "ONE = \"\";\nTWO = \"\";\n\nHeaders = New Map();\nHeaders.Insert(\"Content-Type\", \"application/x-www-form-urlencoded\");\n\nConnection = New HTTPConnection(\"example.com\", 80);\nHTTPRequest = New HTTPRequest(\"/\", Headers);\nHTTPRequest.SetBodyFromString(\"a=\" + ONE + \"&A=2\" + \"&a=\" + TWO);\n\nHTTPResponse = Connection.CallHTTPMethod(\"POST\", HTTPRequest);"
+        }
+    },
+    {
+        "Сценарий": {
+            "Команда": "curl http://example.com --data-urlencode 'a=one two' --data-urlencode 'a=&'",
+            "РазбиратьJSON": false,
+            "ОжидаемыйКод": "ТелоЗапроса = \"a=one%20two&a=%26\";\n\nЗаголовки = Новый Соответствие();\nЗаголовки.Вставить(\"Content-Type\", \"application/x-www-form-urlencoded\");\n\nСоединение = Новый HTTPСоединение(\"example.com\", 80);\nHTTPЗапрос = Новый HTTPЗапрос(\"/\", Заголовки);\nHTTPЗапрос.УстановитьТелоИзСтроки(ТелоЗапроса);\n\nHTTPОтвет = Соединение.ВызватьHTTPМетод(\"POST\", HTTPЗапрос);",
+            "ОжидаемыйКодАнглийский": "RequestBody = \"a=one%20two&a=%26\";\n\nHeaders = New Map();\nHeaders.Insert(\"Content-Type\", \"application/x-www-form-urlencoded\");\n\nConnection = New HTTPConnection(\"example.com\", 80);\nHTTPRequest = New HTTPRequest(\"/\", Headers);\nHTTPRequest.SetBodyFromString(RequestBody);\n\nHTTPResponse = Connection.CallHTTPMethod(\"POST\", HTTPRequest);"
+        }
+    },
+    {
+        "Сценарий": {
+            "Команда": "curl http://example.com -G -d 'a=1' -d 'A=2' -d 'a=3'",
+            "РазбиратьJSON": false,
+            "ОжидаемыйКод": "Соединение = Новый HTTPСоединение(\"example.com\", 80);\nHTTPЗапрос = Новый HTTPЗапрос(\"?a=1&A=2&a=3\");\n\nHTTPОтвет = Соединение.ВызватьHTTPМетод(\"GET\", HTTPЗапрос);",
+            "ОжидаемыйКодАнглийский": "Connection = New HTTPConnection(\"example.com\", 80);\nHTTPRequest = New HTTPRequest(\"?a=1&A=2&a=3\");\n\nHTTPResponse = Connection.CallHTTPMethod(\"GET\", HTTPRequest);"
+        }
+    },
+    {
+        "Сценарий": {
+            "Команда": "curl http://example.com -G -d 'a=1&A=2&a=3'",
+            "РазбиратьJSON": false,
+            "ОжидаемыйКод": "Соединение = Новый HTTPСоединение(\"example.com\", 80);\nHTTPЗапрос = Новый HTTPЗапрос(\"?a=1&A=2&a=3\");\n\nHTTPОтвет = Соединение.ВызватьHTTPМетод(\"GET\", HTTPЗапрос);",
+            "ОжидаемыйКодАнглийский": "Connection = New HTTPConnection(\"example.com\", 80);\nHTTPRequest = New HTTPRequest(\"?a=1&A=2&a=3\");\n\nHTTPResponse = Connection.CallHTTPMethod(\"GET\", HTTPRequest);"
+        }
+    },
+    {
+        "Сценарий": {
+            "Команда": "curl 'http://example.com?a=1&A=2&a=3#fragment'",
+            "РазбиратьJSON": false,
+            "ОжидаемыйКод": "Соединение = Новый HTTPСоединение(\"example.com\", 80);\nHTTPЗапрос = Новый HTTPЗапрос(\"?a=1&A=2&a=3\");\n\nHTTPОтвет = Соединение.ВызватьHTTPМетод(\"GET\", HTTPЗапрос);",
+            "ОжидаемыйКодАнглийский": "Connection = New HTTPConnection(\"example.com\", 80);\nHTTPRequest = New HTTPRequest(\"?a=1&A=2&a=3\");\n\nHTTPResponse = Connection.CallHTTPMethod(\"GET\", HTTPRequest);"
+        }
+    },
+    {
+        "Сценарий": {
+            "Команда": "curl \"http://example.com?a=$ONE&A=2&a=$TWO#fragment\"",
+            "РазбиратьJSON": false,
+            "ОжидаемыйКод": "ONE = \"\";\nTWO = \"\";\n\nСоединение = Новый HTTPСоединение(\"example.com\", 80);\nHTTPЗапрос = Новый HTTPЗапрос(\"?a=\" + ONE + \"&A=2&a=\" + TWO);\n\nHTTPОтвет = Соединение.ВызватьHTTPМетод(\"GET\", HTTPЗапрос);",
+            "ОжидаемыйКодАнглийский": "ONE = \"\";\nTWO = \"\";\n\nConnection = New HTTPConnection(\"example.com\", 80);\nHTTPRequest = New HTTPRequest(\"?a=\" + ONE + \"&A=2&a=\" + TWO);\n\nHTTPResponse = Connection.CallHTTPMethod(\"GET\", HTTPRequest);"
+        }
+    },
+    {
+        "Сценарий": {
+            "Команда": "curl http://example.com -d 'a=1' -d 'A=2'",
+            "РазбиратьJSON": false,
+            "ОжидаемыйКод": "Заголовки = Новый Соответствие();\nЗаголовки.Вставить(\"Content-Type\", \"application/x-www-form-urlencoded\");\n\nСоединение = Новый HTTPСоединение(\"example.com\", 80);\nHTTPЗапрос = Новый HTTPЗапрос(\"/\", Заголовки);\nHTTPЗапрос.УстановитьТелоИзСтроки(\"a=1\" + \"&A=2\");\n\nHTTPОтвет = Соединение.ВызватьHTTPМетод(\"POST\", HTTPЗапрос);",
+            "ОжидаемыйКодАнглийский": "Headers = New Map();\nHeaders.Insert(\"Content-Type\", \"application/x-www-form-urlencoded\");\n\nConnection = New HTTPConnection(\"example.com\", 80);\nHTTPRequest = New HTTPRequest(\"/\", Headers);\nHTTPRequest.SetBodyFromString(\"a=1\" + \"&A=2\");\n\nHTTPResponse = Connection.CallHTTPMethod(\"POST\", HTTPRequest);"
+        }
+    },
+    {
+        "Сценарий": {
+            "Команда": "curl 'http://example.com?a=1&A=2'",
+            "РазбиратьJSON": false,
+            "ОжидаемыйКод": "Соединение = Новый HTTPСоединение(\"example.com\", 80);\nHTTPЗапрос = Новый HTTPЗапрос(\"?a=1&A=2\");\n\nHTTPОтвет = Соединение.ВызватьHTTPМетод(\"GET\", HTTPЗапрос);",
+            "ОжидаемыйКодАнглийский": "Connection = New HTTPConnection(\"example.com\", 80);\nHTTPRequest = New HTTPRequest(\"?a=1&A=2\");\n\nHTTPResponse = Connection.CallHTTPMethod(\"GET\", HTTPRequest);"
+        }
+    },
+    {
+        "Сценарий": {
+            "Команда": "curl http://example.com -d \"$KEY=1\" -d \"$KEY=2\"",
+            "РазбиратьJSON": false,
+            "ОжидаемыйКод": "KEY = \"\";\n\nЗаголовки = Новый Соответствие();\nЗаголовки.Вставить(\"Content-Type\", \"application/x-www-form-urlencoded\");\n\nСоединение = Новый HTTPСоединение(\"example.com\", 80);\nHTTPЗапрос = Новый HTTPЗапрос(\"/\", Заголовки);\nHTTPЗапрос.УстановитьТелоИзСтроки(KEY + \"=1\" + \"&\" + KEY + \"=2\");\n\nHTTPОтвет = Соединение.ВызватьHTTPМетод(\"POST\", HTTPЗапрос);",
+            "ОжидаемыйКодАнглийский": "KEY = \"\";\n\nHeaders = New Map();\nHeaders.Insert(\"Content-Type\", \"application/x-www-form-urlencoded\");\n\nConnection = New HTTPConnection(\"example.com\", 80);\nHTTPRequest = New HTTPRequest(\"/\", Headers);\nHTTPRequest.SetBodyFromString(KEY + \"=1\" + \"&\" + KEY + \"=2\");\n\nHTTPResponse = Connection.CallHTTPMethod(\"POST\", HTTPRequest);"
+        }
+    },
+    {
+        "Сценарий": {
+            "Команда": "curl http://example.com -d \"$FIRST=1\" -d \"$SECOND=2\"",
+            "РазбиратьJSON": false,
+            "ОжидаемыйКод": "FIRST = \"\";\nSECOND = \"\";\n\nЗаголовки = Новый Соответствие();\nЗаголовки.Вставить(\"Content-Type\", \"application/x-www-form-urlencoded\");\n\nСоединение = Новый HTTPСоединение(\"example.com\", 80);\nHTTPЗапрос = Новый HTTPЗапрос(\"/\", Заголовки);\nHTTPЗапрос.УстановитьТелоИзСтроки(FIRST + \"=1\" + \"&\" + SECOND + \"=2\");\n\nHTTPОтвет = Соединение.ВызватьHTTPМетод(\"POST\", HTTPЗапрос);",
+            "ОжидаемыйКодАнглийский": "FIRST = \"\";\nSECOND = \"\";\n\nHeaders = New Map();\nHeaders.Insert(\"Content-Type\", \"application/x-www-form-urlencoded\");\n\nConnection = New HTTPConnection(\"example.com\", 80);\nHTTPRequest = New HTTPRequest(\"/\", Headers);\nHTTPRequest.SetBodyFromString(FIRST + \"=1\" + \"&\" + SECOND + \"=2\");\n\nHTTPResponse = Connection.CallHTTPMethod(\"POST\", HTTPRequest);"
+        }
     }
 ]
