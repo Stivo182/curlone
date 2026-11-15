@@ -321,6 +321,42 @@ test('блокирует повторную отправку до заверше
     assert.equal(elements.convertButton.disabled, false);
 });
 
+for (const controlName of ['command', 'target']) {
+    for (const requestFails of [false, true]) {
+        for (const focusMoved of [false, true]) {
+            test(`фокус ${controlName}: ошибка=${requestFails}, переход=${focusMoved}`, async () => {
+                const elements = createElements();
+                const control = controlName === 'command' ? elements.command : elements.generatorOptions[0];
+                const currentDocument = { ...documentRef, body: {}, activeElement: control };
+                const otherControl = {};
+                control.isConnected = true;
+                control.focus = (options) => {
+                    assert.equal(control.inert, false);
+                    assert.deepEqual(options, { preventScroll: true });
+                    currentDocument.activeElement = control;
+                };
+                let completeRequest;
+                const conversion = webModule.submitConversion({
+                    elements,
+                    requestConversion: () => new Promise((resolve, reject) => {
+                        completeRequest = () => requestFails ? reject(new Error('network')) : resolve(successResponse());
+                    }),
+                    showOutput() {},
+                    documentRef: currentDocument
+                });
+
+                assert.equal(control.inert, true);
+                currentDocument.activeElement = focusMoved ? otherControl : currentDocument.body;
+                completeRequest();
+
+                assert.equal(await conversion, !requestFails);
+                assert.equal(currentDocument.activeElement, focusMoved ? otherControl : control);
+                assert.equal(control.inert, false);
+            });
+        }
+    }
+}
+
 test('включает форму после загрузки подсветки', async () => {
     const elements = createElements();
     const highlighter = {};

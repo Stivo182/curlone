@@ -141,6 +141,11 @@ export async function requestConversion(fetchRef, payload) {
     return result;
 }
 
+/**
+ * Отправляет форму и возвращает фокус после снятия блокировки, если он не перешёл к другому элементу.
+ * @param {object} options Элементы формы, документ и функции отправки запроса и вывода результата.
+ * @returns {Promise<boolean>} Признак успешной конвертации.
+ */
 export async function submitConversion({
     elements,
     form = elements.form,
@@ -161,6 +166,8 @@ export async function submitConversion({
 
     elements.command.removeAttribute('aria-invalid');
     renderMessages([], [], elements, documentRef);
+    const focusedControl = documentRef.activeElement;
+    const restoreFocus = elements.requestControls.includes(focusedControl);
     setRequestPending(elements, true);
     try {
         const payload = collectConversionRequest(elements);
@@ -176,6 +183,10 @@ export async function submitConversion({
         return false;
     } finally {
         setRequestPending(elements, false);
+        if (restoreFocus && focusedControl.isConnected
+            && (documentRef.activeElement === documentRef.body || documentRef.activeElement === null)) {
+            focusedControl.focus({ preventScroll: true });
+        }
     }
 }
 
