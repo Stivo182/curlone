@@ -8,7 +8,7 @@
     "/api/v2/convert": {
       "post": {
         "operationId": "convertCurlCommand",
-        "summary": "Преобразовать команду curl в код OneScript",
+        "summary": "Преобразовать команду curl в код для платформы 1С:Предприятие",
         "x-maxBodyBytes": 65536,
         "requestBody": {
           "required": true,
