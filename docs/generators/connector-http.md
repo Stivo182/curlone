@@ -1,8 +1,8 @@
 # Connector HTTP
 
 Генератор Connector формирует код для библиотеки
-[Connector](https://github.com/vbondarevsky/1connector). Используйте её, если проект уже работает через
-`КоннекторHTTP` и типы ответа Connector.
+[Connector](https://github.com/vbondarevsky/Connector) на платформе «1С:Предприятие». Используйте её, если проект
+уже работает через `КоннекторHTTP`.
 
 ## Выбор генератора
 
@@ -24,8 +24,9 @@ curlone convert --target connector "curl https://example.com"
 | --- | --- | --- | --- |
 | `ФорматДесериализацииОтвета` | строка | `Неопределено` | Формат обработки тела HTTP-ответа |
 
-Значение `ФорматыДесериализацииОтветаCURL.JSON()` выбирает методы Connector с суффиксом `Json`. Для HTTP API этой
-настройке соответствует `generatorOptions.responseDeserializationFormat`.
+Значение `ФорматыДесериализацииОтветаCURL.JSON()` добавляет разбор полученного ответа через
+`КоннекторHTTP.КакJson()`. Оно не меняет формат отправляемого тела. При сохранении ответа в файл записываются
+исходные байты ответа. Для HTTP API этой настройке соответствует `generatorOptions.responseDeserializationFormat`.
 
 ## Поддерживаемые сценарии
 

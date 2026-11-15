@@ -232,7 +232,7 @@ curlone использует свободные библиотеки и инст
 - [errors](https://github.com/Stivo182/oscript-errors)
 - [url](https://github.com/Stivo182/oscript-url)
 - [resilience](https://github.com/Stivo182/oscript-resilience)
-- [Connector](https://github.com/vbondarevsky/1connector)
+- [Connector](https://github.com/vbondarevsky/Connector)
 - [OneUnit](https://github.com/sfaqer/oneunit)
 - [asserts](https://github.com/oscript-library/asserts)
 - [Shiki 式](https://github.com/shikijs/shiki)

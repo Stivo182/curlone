@@ -1003,8 +1003,8 @@
     "Сценарий": {
       "Команда": "curl http://example1.com\ncurl http://example2.com -X POST\ncurl http://example3.com -X PUT\ncurl http://example4.com -X DELETE\ncurl http://example5.com -X PATCH",
       "РазбиратьJSON": true,
-      "ОжидаемыйКод": "//////////////////////////////////////////////\n// Команда #1.\n\nРезультат = КоннекторHTTP.GetJson(\"http://example1.com\");\n\n//////////////////////////////////////////////\n// Команда #2.\n\nРезультат = КоннекторHTTP.PostJson(\"http://example2.com\");\n\n//////////////////////////////////////////////\n// Команда #3.\n\nРезультат = КоннекторHTTP.PutJson(\"http://example3.com\");\n\n//////////////////////////////////////////////\n// Команда #4.\n\nРезультат = КоннекторHTTP.DeleteJson(\"http://example4.com\");\n\n//////////////////////////////////////////////\n// Команда #5.\n\nРезультат = КоннекторHTTP.Patch(\"http://example5.com\");",
-      "ОжидаемыйКодАнглийский": "//////////////////////////////////////////////\n// Command #1.\n\nResult = HTTPConnector.GetJson(\"http://example1.com\");\n\n//////////////////////////////////////////////\n// Command #2.\n\nResult = HTTPConnector.PostJson(\"http://example2.com\");\n\n//////////////////////////////////////////////\n// Command #3.\n\nResult = HTTPConnector.PutJson(\"http://example3.com\");\n\n//////////////////////////////////////////////\n// Command #4.\n\nResult = HTTPConnector.DeleteJson(\"http://example4.com\");\n\n//////////////////////////////////////////////\n// Command #5.\n\nResult = HTTPConnector.Patch(\"http://example5.com\");"
+      "ОжидаемыйКод": "//////////////////////////////////////////////\n// Команда #1.\n\nРезультат = КоннекторHTTP.Get(\"http://example1.com\");\n\nРезультат = КоннекторHTTP.КакJson(Результат);\n\n//////////////////////////////////////////////\n// Команда #2.\n\nРезультат = КоннекторHTTP.Post(\"http://example2.com\");\n\nРезультат = КоннекторHTTP.КакJson(Результат);\n\n//////////////////////////////////////////////\n// Команда #3.\n\nРезультат = КоннекторHTTP.Put(\"http://example3.com\");\n\nРезультат = КоннекторHTTP.КакJson(Результат);\n\n//////////////////////////////////////////////\n// Команда #4.\n\nРезультат = КоннекторHTTP.Delete(\"http://example4.com\");\n\nРезультат = КоннекторHTTP.КакJson(Результат);\n\n//////////////////////////////////////////////\n// Команда #5.\n\nРезультат = КоннекторHTTP.Patch(\"http://example5.com\");\n\nРезультат = КоннекторHTTP.КакJson(Результат);",
+      "ОжидаемыйКодАнглийский": "//////////////////////////////////////////////\n// Command #1.\n\nResult = HTTPConnector.Get(\"http://example1.com\");\n\nResult = HTTPConnector.AsJson(Result);\n\n//////////////////////////////////////////////\n// Command #2.\n\nResult = HTTPConnector.Post(\"http://example2.com\");\n\nResult = HTTPConnector.AsJson(Result);\n\n//////////////////////////////////////////////\n// Command #3.\n\nResult = HTTPConnector.Put(\"http://example3.com\");\n\nResult = HTTPConnector.AsJson(Result);\n\n//////////////////////////////////////////////\n// Command #4.\n\nResult = HTTPConnector.Delete(\"http://example4.com\");\n\nResult = HTTPConnector.AsJson(Result);\n\n//////////////////////////////////////////////\n// Command #5.\n\nResult = HTTPConnector.Patch(\"http://example5.com\");\n\nResult = HTTPConnector.AsJson(Result);"
     }
   },
   {
@@ -1124,8 +1124,8 @@
   "Сценарий": {
     "Команда": "curl -o \"$OUT\" http://example.com/file.txt",
     "РазбиратьJSON": false,
-    "ОжидаемыйКод": "OUT = \"\";\n\nРезультат = КоннекторHTTP.Get(\"http://example.com/file.txt\");\n\nИмяФайлаОтвета = OUT;\nДанныеОтвета = Результат.ДвоичныеДанные();\nДанныеОтвета.Записать(ИмяФайлаОтвета);\nРезультат = ИмяФайлаОтвета;",
-    "ОжидаемыйКодАнглийский": "OUT = \"\";\n\nResult = HTTPConnector.Get(\"http://example.com/file.txt\");\n\nResponseFileName = OUT;\nResponseData = Result.BinaryData();\nResponseData.Write(ResponseFileName);\nResult = ResponseFileName;"
+    "ОжидаемыйКод": "OUT = \"\";\n\nРезультат = КоннекторHTTP.Get(\"http://example.com/file.txt\");\n\nИмяФайлаОтвета = OUT;\nДанныеОтвета = КоннекторHTTP.КакДвоичныеДанные(Результат);\nДанныеОтвета.Записать(ИмяФайлаОтвета);\nРезультат = ИмяФайлаОтвета;",
+    "ОжидаемыйКодАнглийский": "OUT = \"\";\n\nResult = HTTPConnector.Get(\"http://example.com/file.txt\");\n\nResponseFileName = OUT;\nResponseData = HTTPConnector.AsBinaryData(Result);\nResponseData.Write(ResponseFileName);\nResult = ResponseFileName;"
   }
 },
 {
@@ -1421,80 +1421,128 @@
     "Сценарий": {
       "Команда": "curl http://example.com/file.txt -o sub/file.txt --output-dir out --create-dirs",
       "РазбиратьJSON": false,
-      "ОжидаемыйКод": "Результат = КоннекторHTTP.Get(\"http://example.com/file.txt\");\n\nИмяФайлаОтвета = \"sub/file.txt\";\nИмяФайлаОтвета = \"out/\" + ИмяФайлаОтвета;\nФайлОтвета = Новый Файл(ИмяФайлаОтвета);\nЕсли Не ПустаяСтрока(ФайлОтвета.Путь) Тогда\n\tСоздатьКаталог(ФайлОтвета.Путь);\nКонецЕсли;\nДанныеОтвета = Результат.ДвоичныеДанные();\nДанныеОтвета.Записать(ИмяФайлаОтвета);\nРезультат = ИмяФайлаОтвета;",
-      "ОжидаемыйКодАнглийский": "Result = HTTPConnector.Get(\"http://example.com/file.txt\");\n\nResponseFileName = \"sub/file.txt\";\nResponseFileName = \"out/\" + ResponseFileName;\nResponseFile = New File(ResponseFileName);\nIf Not IsBlankString(ResponseFile.Path) Then\n\tCreateDirectory(ResponseFile.Path);\nEndIf;\nResponseData = Result.BinaryData();\nResponseData.Write(ResponseFileName);\nResult = ResponseFileName;"
+      "ОжидаемыйКод": "Результат = КоннекторHTTP.Get(\"http://example.com/file.txt\");\n\nИмяФайлаОтвета = \"sub/file.txt\";\nИмяФайлаОтвета = \"out/\" + ИмяФайлаОтвета;\nФайлОтвета = Новый Файл(ИмяФайлаОтвета);\nЕсли Не ПустаяСтрока(ФайлОтвета.Путь) Тогда\n\tСоздатьКаталог(ФайлОтвета.Путь);\nКонецЕсли;\nДанныеОтвета = КоннекторHTTP.КакДвоичныеДанные(Результат);\nДанныеОтвета.Записать(ИмяФайлаОтвета);\nРезультат = ИмяФайлаОтвета;",
+      "ОжидаемыйКодАнглийский": "Result = HTTPConnector.Get(\"http://example.com/file.txt\");\n\nResponseFileName = \"sub/file.txt\";\nResponseFileName = \"out/\" + ResponseFileName;\nResponseFile = New File(ResponseFileName);\nIf Not IsBlankString(ResponseFile.Path) Then\n\tCreateDirectory(ResponseFile.Path);\nEndIf;\nResponseData = HTTPConnector.AsBinaryData(Result);\nResponseData.Write(ResponseFileName);\nResult = ResponseFileName;"
     }
   },
   {
     "Сценарий": {
       "Команда": "curl http://example.com/file.txt -o 'sub/fi\"le.txt' --output-dir 'ou\"t'",
       "РазбиратьJSON": false,
-      "ОжидаемыйКод": "Результат = КоннекторHTTP.Get(\"http://example.com/file.txt\");\n\nИмяФайлаОтвета = \"sub/fi\"\"le.txt\";\nИмяФайлаОтвета = \"ou\"\"t/\" + ИмяФайлаОтвета;\nДанныеОтвета = Результат.ДвоичныеДанные();\nДанныеОтвета.Записать(ИмяФайлаОтвета);\nРезультат = ИмяФайлаОтвета;",
-      "ОжидаемыйКодАнглийский": "Result = HTTPConnector.Get(\"http://example.com/file.txt\");\n\nResponseFileName = \"sub/fi\"\"le.txt\";\nResponseFileName = \"ou\"\"t/\" + ResponseFileName;\nResponseData = Result.BinaryData();\nResponseData.Write(ResponseFileName);\nResult = ResponseFileName;"
+      "ОжидаемыйКод": "Результат = КоннекторHTTP.Get(\"http://example.com/file.txt\");\n\nИмяФайлаОтвета = \"sub/fi\"\"le.txt\";\nИмяФайлаОтвета = \"ou\"\"t/\" + ИмяФайлаОтвета;\nДанныеОтвета = КоннекторHTTP.КакДвоичныеДанные(Результат);\nДанныеОтвета.Записать(ИмяФайлаОтвета);\nРезультат = ИмяФайлаОтвета;",
+      "ОжидаемыйКодАнглийский": "Result = HTTPConnector.Get(\"http://example.com/file.txt\");\n\nResponseFileName = \"sub/fi\"\"le.txt\";\nResponseFileName = \"ou\"\"t/\" + ResponseFileName;\nResponseData = HTTPConnector.AsBinaryData(Result);\nResponseData.Write(ResponseFileName);\nResult = ResponseFileName;"
     }
   },
   {
     "Сценарий": {
       "Команда": "curl http://example.com/file.txt -o 'sub/fi\"le.txt' --output-dir \"$DIR\" --create-dirs",
       "РазбиратьJSON": false,
-      "ОжидаемыйКод": "DIR = \"\";\n\nРезультат = КоннекторHTTP.Get(\"http://example.com/file.txt\");\n\nИмяФайлаОтвета = \"sub/fi\"\"le.txt\";\nКаталог = DIR;\nЕсли Каталог <> \"\" И Прав(Каталог, 1) <> \"/\" И Прав(Каталог, 1) <> \"\\\" Тогда\n\tКаталог = Каталог + \"/\";\nКонецЕсли;\n\nИмяФайлаОтвета = Каталог + ИмяФайлаОтвета;\nФайлОтвета = Новый Файл(ИмяФайлаОтвета);\nЕсли Не ПустаяСтрока(ФайлОтвета.Путь) Тогда\n\tСоздатьКаталог(ФайлОтвета.Путь);\nКонецЕсли;\nДанныеОтвета = Результат.ДвоичныеДанные();\nДанныеОтвета.Записать(ИмяФайлаОтвета);\nРезультат = ИмяФайлаОтвета;",
-      "ОжидаемыйКодАнглийский": "DIR = \"\";\n\nResult = HTTPConnector.Get(\"http://example.com/file.txt\");\n\nResponseFileName = \"sub/fi\"\"le.txt\";\nCatalog = DIR;\nIf Catalog \u003c\u003e \"\" And Right(Catalog, 1) \u003c\u003e \"/\" And Right(Catalog, 1) \u003c\u003e \"\\\" Then\n\tCatalog = Catalog + \"/\";\nEndIf;\n\nResponseFileName = Catalog + ResponseFileName;\nResponseFile = New File(ResponseFileName);\nIf Not IsBlankString(ResponseFile.Path) Then\n\tCreateDirectory(ResponseFile.Path);\nEndIf;\nResponseData = Result.BinaryData();\nResponseData.Write(ResponseFileName);\nResult = ResponseFileName;"
+      "ОжидаемыйКод": "DIR = \"\";\n\nРезультат = КоннекторHTTP.Get(\"http://example.com/file.txt\");\n\nИмяФайлаОтвета = \"sub/fi\"\"le.txt\";\nКаталог = DIR;\nЕсли Каталог <> \"\" И Прав(Каталог, 1) <> \"/\" И Прав(Каталог, 1) <> \"\\\" Тогда\n\tКаталог = Каталог + \"/\";\nКонецЕсли;\n\nИмяФайлаОтвета = Каталог + ИмяФайлаОтвета;\nФайлОтвета = Новый Файл(ИмяФайлаОтвета);\nЕсли Не ПустаяСтрока(ФайлОтвета.Путь) Тогда\n\tСоздатьКаталог(ФайлОтвета.Путь);\nКонецЕсли;\nДанныеОтвета = КоннекторHTTP.КакДвоичныеДанные(Результат);\nДанныеОтвета.Записать(ИмяФайлаОтвета);\nРезультат = ИмяФайлаОтвета;",
+      "ОжидаемыйКодАнглийский": "DIR = \"\";\n\nResult = HTTPConnector.Get(\"http://example.com/file.txt\");\n\nResponseFileName = \"sub/fi\"\"le.txt\";\nCatalog = DIR;\nIf Catalog <> \"\" And Right(Catalog, 1) <> \"/\" And Right(Catalog, 1) <> \"\\\" Then\n\tCatalog = Catalog + \"/\";\nEndIf;\n\nResponseFileName = Catalog + ResponseFileName;\nResponseFile = New File(ResponseFileName);\nIf Not IsBlankString(ResponseFile.Path) Then\n\tCreateDirectory(ResponseFile.Path);\nEndIf;\nResponseData = HTTPConnector.AsBinaryData(Result);\nResponseData.Write(ResponseFileName);\nResult = ResponseFileName;"
     }
   },
   {
     "Сценарий": {
       "Команда": "curl http://example.com/file.txt -o 'su\"b/file.txt' --create-dirs",
       "РазбиратьJSON": false,
-      "ОжидаемыйКод": "Результат = КоннекторHTTP.Get(\"http://example.com/file.txt\");\n\nИмяФайлаОтвета = \"su\"\"b/file.txt\";\nФайлОтвета = Новый Файл(ИмяФайлаОтвета);\nЕсли Не ПустаяСтрока(ФайлОтвета.Путь) Тогда\n\tСоздатьКаталог(ФайлОтвета.Путь);\nКонецЕсли;\nДанныеОтвета = Результат.ДвоичныеДанные();\nДанныеОтвета.Записать(ИмяФайлаОтвета);\nРезультат = ИмяФайлаОтвета;",
-      "ОжидаемыйКодАнглийский": "Result = HTTPConnector.Get(\"http://example.com/file.txt\");\n\nResponseFileName = \"su\"\"b/file.txt\";\nResponseFile = New File(ResponseFileName);\nIf Not IsBlankString(ResponseFile.Path) Then\n\tCreateDirectory(ResponseFile.Path);\nEndIf;\nResponseData = Result.BinaryData();\nResponseData.Write(ResponseFileName);\nResult = ResponseFileName;"
+      "ОжидаемыйКод": "Результат = КоннекторHTTP.Get(\"http://example.com/file.txt\");\n\nИмяФайлаОтвета = \"su\"\"b/file.txt\";\nФайлОтвета = Новый Файл(ИмяФайлаОтвета);\nЕсли Не ПустаяСтрока(ФайлОтвета.Путь) Тогда\n\tСоздатьКаталог(ФайлОтвета.Путь);\nКонецЕсли;\nДанныеОтвета = КоннекторHTTP.КакДвоичныеДанные(Результат);\nДанныеОтвета.Записать(ИмяФайлаОтвета);\nРезультат = ИмяФайлаОтвета;",
+      "ОжидаемыйКодАнглийский": "Result = HTTPConnector.Get(\"http://example.com/file.txt\");\n\nResponseFileName = \"su\"\"b/file.txt\";\nResponseFile = New File(ResponseFileName);\nIf Not IsBlankString(ResponseFile.Path) Then\n\tCreateDirectory(ResponseFile.Path);\nEndIf;\nResponseData = HTTPConnector.AsBinaryData(Result);\nResponseData.Write(ResponseFileName);\nResult = ResponseFileName;"
     }
   },
   {
     "Сценарий": {
       "Команда": "curl http://example.com/file.txt -O --create-dirs",
       "РазбиратьJSON": false,
-      "ОжидаемыйКод": "Результат = КоннекторHTTP.Get(\"http://example.com/file.txt\");\n\nИмяФайлаОтвета = \"file.txt\";\nФайлОтвета = Новый Файл(ИмяФайлаОтвета);\nЕсли Не ПустаяСтрока(ФайлОтвета.Путь) Тогда\n\tСоздатьКаталог(ФайлОтвета.Путь);\nКонецЕсли;\nДанныеОтвета = Результат.ДвоичныеДанные();\nДанныеОтвета.Записать(ИмяФайлаОтвета);\nРезультат = ИмяФайлаОтвета;",
-      "ОжидаемыйКодАнглийский": "Result = HTTPConnector.Get(\"http://example.com/file.txt\");\n\nResponseFileName = \"file.txt\";\nResponseFile = New File(ResponseFileName);\nIf Not IsBlankString(ResponseFile.Path) Then\n\tCreateDirectory(ResponseFile.Path);\nEndIf;\nResponseData = Result.BinaryData();\nResponseData.Write(ResponseFileName);\nResult = ResponseFileName;"
+      "ОжидаемыйКод": "Результат = КоннекторHTTP.Get(\"http://example.com/file.txt\");\n\nИмяФайлаОтвета = \"file.txt\";\nФайлОтвета = Новый Файл(ИмяФайлаОтвета);\nЕсли Не ПустаяСтрока(ФайлОтвета.Путь) Тогда\n\tСоздатьКаталог(ФайлОтвета.Путь);\nКонецЕсли;\nДанныеОтвета = КоннекторHTTP.КакДвоичныеДанные(Результат);\nДанныеОтвета.Записать(ИмяФайлаОтвета);\nРезультат = ИмяФайлаОтвета;",
+      "ОжидаемыйКодАнглийский": "Result = HTTPConnector.Get(\"http://example.com/file.txt\");\n\nResponseFileName = \"file.txt\";\nResponseFile = New File(ResponseFileName);\nIf Not IsBlankString(ResponseFile.Path) Then\n\tCreateDirectory(ResponseFile.Path);\nEndIf;\nResponseData = HTTPConnector.AsBinaryData(Result);\nResponseData.Write(ResponseFileName);\nResult = ResponseFileName;"
     }
   },
   {
     "Сценарий": {
       "Команда": "curl http://example.com/file.txt -o file.txt --create-dirs",
       "РазбиратьJSON": false,
-      "ОжидаемыйКод": "Результат = КоннекторHTTP.Get(\"http://example.com/file.txt\");\n\nИмяФайлаОтвета = \"file.txt\";\nФайлОтвета = Новый Файл(ИмяФайлаОтвета);\nЕсли Не ПустаяСтрока(ФайлОтвета.Путь) Тогда\n\tСоздатьКаталог(ФайлОтвета.Путь);\nКонецЕсли;\nДанныеОтвета = Результат.ДвоичныеДанные();\nДанныеОтвета.Записать(ИмяФайлаОтвета);\nРезультат = ИмяФайлаОтвета;",
-      "ОжидаемыйКодАнглийский": "Result = HTTPConnector.Get(\"http://example.com/file.txt\");\n\nResponseFileName = \"file.txt\";\nResponseFile = New File(ResponseFileName);\nIf Not IsBlankString(ResponseFile.Path) Then\n\tCreateDirectory(ResponseFile.Path);\nEndIf;\nResponseData = Result.BinaryData();\nResponseData.Write(ResponseFileName);\nResult = ResponseFileName;"
+      "ОжидаемыйКод": "Результат = КоннекторHTTP.Get(\"http://example.com/file.txt\");\n\nИмяФайлаОтвета = \"file.txt\";\nФайлОтвета = Новый Файл(ИмяФайлаОтвета);\nЕсли Не ПустаяСтрока(ФайлОтвета.Путь) Тогда\n\tСоздатьКаталог(ФайлОтвета.Путь);\nКонецЕсли;\nДанныеОтвета = КоннекторHTTP.КакДвоичныеДанные(Результат);\nДанныеОтвета.Записать(ИмяФайлаОтвета);\nРезультат = ИмяФайлаОтвета;",
+      "ОжидаемыйКодАнглийский": "Result = HTTPConnector.Get(\"http://example.com/file.txt\");\n\nResponseFileName = \"file.txt\";\nResponseFile = New File(ResponseFileName);\nIf Not IsBlankString(ResponseFile.Path) Then\n\tCreateDirectory(ResponseFile.Path);\nEndIf;\nResponseData = HTTPConnector.AsBinaryData(Result);\nResponseData.Write(ResponseFileName);\nResult = ResponseFileName;"
     }
   },
   {
     "Сценарий": {
       "Команда": "curl http://example.com/file.txt -o \"$OUT\" --output-dir out --create-dirs",
       "РазбиратьJSON": false,
-      "ОжидаемыйКод": "OUT = \"\";\n\nРезультат = КоннекторHTTP.Get(\"http://example.com/file.txt\");\n\nИмяФайлаОтвета = OUT;\nИмяФайлаОтвета = \"out/\" + ИмяФайлаОтвета;\nФайлОтвета = Новый Файл(ИмяФайлаОтвета);\nЕсли Не ПустаяСтрока(ФайлОтвета.Путь) Тогда\n\tСоздатьКаталог(ФайлОтвета.Путь);\nКонецЕсли;\nДанныеОтвета = Результат.ДвоичныеДанные();\nДанныеОтвета.Записать(ИмяФайлаОтвета);\nРезультат = ИмяФайлаОтвета;",
-      "ОжидаемыйКодАнглийский": "OUT = \"\";\n\nResult = HTTPConnector.Get(\"http://example.com/file.txt\");\n\nResponseFileName = OUT;\nResponseFileName = \"out/\" + ResponseFileName;\nResponseFile = New File(ResponseFileName);\nIf Not IsBlankString(ResponseFile.Path) Then\n\tCreateDirectory(ResponseFile.Path);\nEndIf;\nResponseData = Result.BinaryData();\nResponseData.Write(ResponseFileName);\nResult = ResponseFileName;"
+      "ОжидаемыйКод": "OUT = \"\";\n\nРезультат = КоннекторHTTP.Get(\"http://example.com/file.txt\");\n\nИмяФайлаОтвета = OUT;\nИмяФайлаОтвета = \"out/\" + ИмяФайлаОтвета;\nФайлОтвета = Новый Файл(ИмяФайлаОтвета);\nЕсли Не ПустаяСтрока(ФайлОтвета.Путь) Тогда\n\tСоздатьКаталог(ФайлОтвета.Путь);\nКонецЕсли;\nДанныеОтвета = КоннекторHTTP.КакДвоичныеДанные(Результат);\nДанныеОтвета.Записать(ИмяФайлаОтвета);\nРезультат = ИмяФайлаОтвета;",
+      "ОжидаемыйКодАнглийский": "OUT = \"\";\n\nResult = HTTPConnector.Get(\"http://example.com/file.txt\");\n\nResponseFileName = OUT;\nResponseFileName = \"out/\" + ResponseFileName;\nResponseFile = New File(ResponseFileName);\nIf Not IsBlankString(ResponseFile.Path) Then\n\tCreateDirectory(ResponseFile.Path);\nEndIf;\nResponseData = HTTPConnector.AsBinaryData(Result);\nResponseData.Write(ResponseFileName);\nResult = ResponseFileName;"
     }
   },
   {
     "Сценарий": {
       "Команда": "curl http://example.com/file.txt -o sub/file.txt --output-dir \"$DIR\" --create-dirs",
       "РазбиратьJSON": false,
-      "ОжидаемыйКод": "DIR = \"\";\n\nРезультат = КоннекторHTTP.Get(\"http://example.com/file.txt\");\n\nИмяФайлаОтвета = \"sub/file.txt\";\nКаталог = DIR;\nЕсли Каталог <> \"\" И Прав(Каталог, 1) <> \"/\" И Прав(Каталог, 1) <> \"\\\" Тогда\n\tКаталог = Каталог + \"/\";\nКонецЕсли;\n\nИмяФайлаОтвета = Каталог + ИмяФайлаОтвета;\nФайлОтвета = Новый Файл(ИмяФайлаОтвета);\nЕсли Не ПустаяСтрока(ФайлОтвета.Путь) Тогда\n\tСоздатьКаталог(ФайлОтвета.Путь);\nКонецЕсли;\nДанныеОтвета = Результат.ДвоичныеДанные();\nДанныеОтвета.Записать(ИмяФайлаОтвета);\nРезультат = ИмяФайлаОтвета;",
-      "ОжидаемыйКодАнглийский": "DIR = \"\";\n\nResult = HTTPConnector.Get(\"http://example.com/file.txt\");\n\nResponseFileName = \"sub/file.txt\";\nCatalog = DIR;\nIf Catalog \u003c\u003e \"\" And Right(Catalog, 1) \u003c\u003e \"/\" And Right(Catalog, 1) \u003c\u003e \"\\\" Then\n\tCatalog = Catalog + \"/\";\nEndIf;\n\nResponseFileName = Catalog + ResponseFileName;\nResponseFile = New File(ResponseFileName);\nIf Not IsBlankString(ResponseFile.Path) Then\n\tCreateDirectory(ResponseFile.Path);\nEndIf;\nResponseData = Result.BinaryData();\nResponseData.Write(ResponseFileName);\nResult = ResponseFileName;"
+      "ОжидаемыйКод": "DIR = \"\";\n\nРезультат = КоннекторHTTP.Get(\"http://example.com/file.txt\");\n\nИмяФайлаОтвета = \"sub/file.txt\";\nКаталог = DIR;\nЕсли Каталог <> \"\" И Прав(Каталог, 1) <> \"/\" И Прав(Каталог, 1) <> \"\\\" Тогда\n\tКаталог = Каталог + \"/\";\nКонецЕсли;\n\nИмяФайлаОтвета = Каталог + ИмяФайлаОтвета;\nФайлОтвета = Новый Файл(ИмяФайлаОтвета);\nЕсли Не ПустаяСтрока(ФайлОтвета.Путь) Тогда\n\tСоздатьКаталог(ФайлОтвета.Путь);\nКонецЕсли;\nДанныеОтвета = КоннекторHTTP.КакДвоичныеДанные(Результат);\nДанныеОтвета.Записать(ИмяФайлаОтвета);\nРезультат = ИмяФайлаОтвета;",
+      "ОжидаемыйКодАнглийский": "DIR = \"\";\n\nResult = HTTPConnector.Get(\"http://example.com/file.txt\");\n\nResponseFileName = \"sub/file.txt\";\nCatalog = DIR;\nIf Catalog <> \"\" And Right(Catalog, 1) <> \"/\" And Right(Catalog, 1) <> \"\\\" Then\n\tCatalog = Catalog + \"/\";\nEndIf;\n\nResponseFileName = Catalog + ResponseFileName;\nResponseFile = New File(ResponseFileName);\nIf Not IsBlankString(ResponseFile.Path) Then\n\tCreateDirectory(ResponseFile.Path);\nEndIf;\nResponseData = HTTPConnector.AsBinaryData(Result);\nResponseData.Write(ResponseFileName);\nResult = ResponseFileName;"
     }
   },
   {
     "Сценарий": {
       "Команда": "curl http://example.com/file.txt -o file.txt --output-dir ''",
       "РазбиратьJSON": false,
-      "ОжидаемыйКод": "Результат = КоннекторHTTP.Get(\"http://example.com/file.txt\");\n\nИмяФайлаОтвета = \"file.txt\";\nДанныеОтвета = Результат.ДвоичныеДанные();\nДанныеОтвета.Записать(ИмяФайлаОтвета);\nРезультат = ИмяФайлаОтвета;",
-      "ОжидаемыйКодАнглийский": "Result = HTTPConnector.Get(\"http://example.com/file.txt\");\n\nResponseFileName = \"file.txt\";\nResponseData = Result.BinaryData();\nResponseData.Write(ResponseFileName);\nResult = ResponseFileName;"
+      "ОжидаемыйКод": "Результат = КоннекторHTTP.Get(\"http://example.com/file.txt\");\n\nИмяФайлаОтвета = \"file.txt\";\nДанныеОтвета = КоннекторHTTP.КакДвоичныеДанные(Результат);\nДанныеОтвета.Записать(ИмяФайлаОтвета);\nРезультат = ИмяФайлаОтвета;",
+      "ОжидаемыйКодАнглийский": "Result = HTTPConnector.Get(\"http://example.com/file.txt\");\n\nResponseFileName = \"file.txt\";\nResponseData = HTTPConnector.AsBinaryData(Result);\nResponseData.Write(ResponseFileName);\nResult = ResponseFileName;"
     }
   },
   {
     "Сценарий": {
       "Команда": "curl http://example.com/file.txt -o \"$OUT\" --output-dir ''",
       "РазбиратьJSON": false,
-      "ОжидаемыйКод": "OUT = \"\";\n\nРезультат = КоннекторHTTP.Get(\"http://example.com/file.txt\");\n\nИмяФайлаОтвета = OUT;\nДанныеОтвета = Результат.ДвоичныеДанные();\nДанныеОтвета.Записать(ИмяФайлаОтвета);\nРезультат = ИмяФайлаОтвета;",
-      "ОжидаемыйКодАнглийский": "OUT = \"\";\n\nResult = HTTPConnector.Get(\"http://example.com/file.txt\");\n\nResponseFileName = OUT;\nResponseData = Result.BinaryData();\nResponseData.Write(ResponseFileName);\nResult = ResponseFileName;"
+      "ОжидаемыйКод": "OUT = \"\";\n\nРезультат = КоннекторHTTP.Get(\"http://example.com/file.txt\");\n\nИмяФайлаОтвета = OUT;\nДанныеОтвета = КоннекторHTTP.КакДвоичныеДанные(Результат);\nДанныеОтвета.Записать(ИмяФайлаОтвета);\nРезультат = ИмяФайлаОтвета;",
+      "ОжидаемыйКодАнглийский": "OUT = \"\";\n\nResult = HTTPConnector.Get(\"http://example.com/file.txt\");\n\nResponseFileName = OUT;\nResponseData = HTTPConnector.AsBinaryData(Result);\nResponseData.Write(ResponseFileName);\nResult = ResponseFileName;"
+    }
+  },
+  {
+    "Сценарий": {
+      "Команда": "curl http://example.com -H 'X-Test: value' -d 'name=alice'",
+      "РазбиратьJSON": true,
+      "ОжидаемыйКод": "Данные = Новый Соответствие();\nДанные.Вставить(\"name\", \"alice\");\n\nЗаголовки = Новый Соответствие();\nЗаголовки.Вставить(\"X-Test\", \"value\");\n\nДополнительныеПараметры = Новый Структура();\nДополнительныеПараметры.Вставить(\"Заголовки\", Заголовки);\n\nРезультат = КоннекторHTTP.Post(\"http://example.com\", Данные, ДополнительныеПараметры);\n\nРезультат = КоннекторHTTP.КакJson(Результат);",
+      "ОжидаемыйКодАнглийский": "Data = New Map();\nData.Insert(\"name\", \"alice\");\n\nHeaders = New Map();\nHeaders.Insert(\"X-Test\", \"value\");\n\nAdditionalParameters = New Structure();\nAdditionalParameters.Insert(\"Headers\", Headers);\n\nResult = HTTPConnector.Post(\"http://example.com\", Data, AdditionalParameters);\n\nResult = HTTPConnector.AsJson(Result);"
+    }
+  },
+  {
+    "Сценарий": {
+      "Команда": "curl http://example.com --data-raw 'plain text'",
+      "РазбиратьJSON": true,
+      "ОжидаемыйКод": "Результат = КоннекторHTTP.Post(\"http://example.com\", \"plain text\");\n\nРезультат = КоннекторHTTP.КакJson(Результат);",
+      "ОжидаемыйКодАнглийский": "Result = HTTPConnector.Post(\"http://example.com\", \"plain text\");\n\nResult = HTTPConnector.AsJson(Result);"
+    }
+  },
+  {
+    "Сценарий": {
+      "Команда": "curl http://example.com -o response.json",
+      "РазбиратьJSON": true,
+      "ОжидаемыйКод": "Результат = КоннекторHTTP.Get(\"http://example.com\");\n\nИмяФайлаОтвета = \"response.json\";\nДанныеОтвета = КоннекторHTTP.КакДвоичныеДанные(Результат);\nДанныеОтвета.Записать(ИмяФайлаОтвета);\nРезультат = ИмяФайлаОтвета;",
+      "ОжидаемыйКодАнглийский": "Result = HTTPConnector.Get(\"http://example.com\");\n\nResponseFileName = \"response.json\";\nResponseData = HTTPConnector.AsBinaryData(Result);\nResponseData.Write(ResponseFileName);\nResult = ResponseFileName;"
+    }
+  },
+  {
+    "Сценарий": {
+      "Команда": "curl 'http://example.com' --json '{\"drink\": \"coffe\"}'",
+      "РазбиратьJSON": true,
+      "ОжидаемыйКод": "Данные = Новый Соответствие();\nДанные.Вставить(\"drink\", \"coffe\");\n\nЗаголовки = Новый Соответствие();\nЗаголовки.Вставить(\"Content-Type\", \"application/json\");\nЗаголовки.Вставить(\"Accept\", \"application/json\");\n\nДополнительныеПараметры = Новый Структура();\nДополнительныеПараметры.Вставить(\"Заголовки\", Заголовки);\nДополнительныеПараметры.Вставить(\"Json\", Данные);\n\nРезультат = КоннекторHTTP.Post(\"http://example.com\", , ДополнительныеПараметры);\n\nРезультат = КоннекторHTTP.КакJson(Результат);",
+      "ОжидаемыйКодАнглийский": "Data = New Map();\nData.Insert(\"drink\", \"coffe\");\n\nHeaders = New Map();\nHeaders.Insert(\"Content-Type\", \"application/json\");\nHeaders.Insert(\"Accept\", \"application/json\");\n\nAdditionalParameters = New Structure();\nAdditionalParameters.Insert(\"Headers\", Headers);\nAdditionalParameters.Insert(\"Json\", Data);\n\nResult = HTTPConnector.Post(\"http://example.com\", , AdditionalParameters);\n\nResult = HTTPConnector.AsJson(Result);"
+    }
+  },
+  {
+    "Сценарий": {
+      "Команда": "curl 'http://example.com' --json @path-to-file1 --json @path-to-file2",
+      "РазбиратьJSON": true,
+      "ОжидаемыйКод": "ЧтениеТекста = Новый ЧтениеТекста(\"path-to-file1\");\nТекстовыеДанныеФайла_1 = ЧтениеТекста.Прочитать();\nЧтениеТекста.Закрыть();\n\nЧтениеТекста = Новый ЧтениеТекста(\"path-to-file2\");\nТекстовыеДанныеФайла_2 = ЧтениеТекста.Прочитать();\nЧтениеТекста.Закрыть();\n\nДанные = ТекстовыеДанныеФайла_1\n\t+ ТекстовыеДанныеФайла_2;\n\nЗаголовки = Новый Соответствие();\nЗаголовки.Вставить(\"Content-Type\", \"application/json\");\nЗаголовки.Вставить(\"Accept\", \"application/json\");\n\nДополнительныеПараметры = Новый Структура();\nДополнительныеПараметры.Вставить(\"Заголовки\", Заголовки);\n\nРезультат = КоннекторHTTP.Post(\"http://example.com\", Данные, ДополнительныеПараметры);\n\nРезультат = КоннекторHTTP.КакJson(Результат);",
+      "ОжидаемыйКодАнглийский": "TextReader = New TextReader(\"path-to-file1\");\nFileText_1 = TextReader.Read();\nTextReader.Close();\n\nTextReader = New TextReader(\"path-to-file2\");\nFileText_2 = TextReader.Read();\nTextReader.Close();\n\nData = FileText_1\n\t+ FileText_2;\n\nHeaders = New Map();\nHeaders.Insert(\"Content-Type\", \"application/json\");\nHeaders.Insert(\"Accept\", \"application/json\");\n\nAdditionalParameters = New Structure();\nAdditionalParameters.Insert(\"Headers\", Headers);\n\nResult = HTTPConnector.Post(\"http://example.com\", Data, AdditionalParameters);\n\nResult = HTTPConnector.AsJson(Result);"
+    }
+  },
+  {
+    "Сценарий": {
+      "Команда": "curl http://example.com -H 'Content-Type: application/json' -d '{\"name\":\"alice\"}'",
+      "РазбиратьJSON": true,
+      "ОжидаемыйКод": "Данные = Новый Соответствие();\nДанные.Вставить(\"name\", \"alice\");\n\nЗаголовки = Новый Соответствие();\nЗаголовки.Вставить(\"Content-Type\", \"application/json\");\n\nДополнительныеПараметры = Новый Структура();\nДополнительныеПараметры.Вставить(\"Заголовки\", Заголовки);\nДополнительныеПараметры.Вставить(\"Json\", Данные);\n\nРезультат = КоннекторHTTP.Post(\"http://example.com\", , ДополнительныеПараметры);\n\nРезультат = КоннекторHTTP.КакJson(Результат);",
+      "ОжидаемыйКодАнглийский": "Data = New Map();\nData.Insert(\"name\", \"alice\");\n\nHeaders = New Map();\nHeaders.Insert(\"Content-Type\", \"application/json\");\n\nAdditionalParameters = New Structure();\nAdditionalParameters.Insert(\"Headers\", Headers);\nAdditionalParameters.Insert(\"Json\", Data);\n\nResult = HTTPConnector.Post(\"http://example.com\", , AdditionalParameters);\n\nResult = HTTPConnector.AsJson(Result);"
     }
   }
 ]
